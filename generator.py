@@ -8,6 +8,7 @@ additionalInfos = open("additionalInfos.txt","r",encoding="utf-8").read().split(
 bagages = open("bagages.txt","r",encoding="utf-8").read().split(",")
 traits = open("traits.txt","r",encoding="utf-8").read().split(",")
 specialConditions = open("specialConditions.txt","r",encoding="utf-8").read().split(",")
+characteristicsList = [professions,healthStates,hobbies,phobias,additionalInfos,bagages,traits,specialConditions]
 
 def reshuffleCards():
     random.shuffle(professions)
@@ -25,6 +26,11 @@ def createCharacter(filename):
     else:
         sex="Женский"
     age = str(random.randint(14,70))
+    if random.randint(0,100)<15:
+        if sex=="Мужской":
+            age+=", гомосексуалист"
+        else:
+            age+=", лесбиянка"
     profession = professions.pop()
     
     if random.randint(0,100)>40:
@@ -53,7 +59,17 @@ def createCharacter(filename):
     characterFile.write("Дополнительная информация: "+additionalInfo+"\n")
     characterFile.write("Человеческая черта: "+trait+"\n")
     characterFile.write("Багаж: "+bagage+"\n")
-    characterFile.write("Карты специальных условий:\n"+specialCondition[0]+"\n"+specialCondition[1])
+    characterFile.write("Карты специальных условий:\n1."+specialCondition[0]+"\n2."+specialCondition[1]+"\n")
+    characterFile.write("---------------------------------------------\n")
+    characterFile.write("              ПРАВИЛА ИГРЫ:\n")
+    characterFile.write("1. На первом ходу открывается 3 характеристики (Профессия + 2 любые на выбор)\n")
+    characterFile.write("2. 1 характеристика - 1 строчка\n")
+    characterFile.write("3. Женщина остаётся плодовитой до 49 лет. Мужчина ограничений по возрасту не имеет.\n")
+    characterFile.write("4. Характеристики и карты специальных условий не повторяются.\n")
+    characterFile.write("5. Если карта специальных условий была озвучена, она будет применена автоматически\n")
+    characterFile.write("6. Игрок может использовать карты специальных условий в любой момент времени от начала игры и до объявления ведущим о его выбывании.\n")
+    characterFile.write("7. Карты специальных условий могут быть использованны лишь единожды за игру.\n")
+    characterFile.write("8. Если вы не можете назвать своего персонажа геем/лесбиянкой по этическим причинам, назовите его \"Чайлдфри\"")
     characterFile.close()
 
 
@@ -75,16 +91,30 @@ while True:
     print("Введите цифру, чтобы выбрать желаемую функцию:")
     print("1 - Вывести количество всех имеющихся характеристик")
     print("2 - Создать персонажей (Полученные характеристики будут удаленны, перезапустите программу чтобы добавить их вновь)")
-    print("3 - Создать катастрофу")
-    print("4 - Перемешать имеющиеся характеристики")
-    print("5 - Закрыть программу")
+    print("3 - Сгенерировать новую характеристику")
+    print("4 - Создать катастрофу")
+    print("5 - Перемешать имеющиеся характеристики")
+    print("6 - Закрыть программу")
     answer = input("Введите цифру: ")
     if answer == "1":
         characteristicsLength()
     elif answer == "2":
         for i in range(int(input("Сколько персонажей вы хотите создать?: "))):
             createCharacter("player"+str(i+1))
-    elif answer == "4":
-        reshuffleCards()
+    elif answer == "3":
+        print ("Какую характеристику сгенерировать?\n1. Возраст и половая ориентация\n2. Профессия\n3. Состояние здоровья\n4. Хобби\n5. Фобия\n6. Дополнительная информация\n7. Багаж\n8. Человеческая черта\n9. Карта специальных условий")
+        rewritefile = open("game/rewrited.txt","w",encoding="utf-8")
+        answer = int(input("Введите число: "))
+        
+        if answer == 1:
+            age = str(random.randint(14,70))
+            if random.randint(0,100)<15:
+                age+=", гомосексуален(а)"
+            rewritefile.write(age)
+        else:
+            rewritefile.write(random.choice(characteristicsList[answer-2]))
+        rewritefile.close()
     elif answer == "5":
+        reshuffleCards()
+    elif answer == "6":
         break
