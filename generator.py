@@ -25,7 +25,10 @@ def createCharacter(filename):
         sex="Мужской"
     else:
         sex="Женский"
-    age = str(random.randint(14,70))
+    age = int(random.normalvariate(40,15))
+    if age<14:
+        age+=10
+    age=str(age)
     if random.randint(0,100)<15:
         if sex=="Мужской":
             age+=", гомосексуалист"
@@ -58,18 +61,20 @@ def createCharacter(filename):
     characterFile.write("Фобия: "+phobia+"\n")
     characterFile.write("Дополнительная информация: "+additionalInfo+"\n")
     characterFile.write("Человеческая черта: "+trait+"\n")
-    characterFile.write("Багаж: "+bagage+"\n")
+    characterFile.write("Багаж: "+bagage+"\n\n\n")
     characterFile.write("Карты специальных условий:\n1."+specialCondition[0]+"\n2."+specialCondition[1]+"\n")
     characterFile.write("---------------------------------------------\n")
     characterFile.write("              ПРАВИЛА ИГРЫ:\n")
-    characterFile.write("1. На первом ходу открывается 3 характеристики (Профессия + 2 любые на выбор)\n")
+    characterFile.write("1. На первом ходу открывается 3 характеристики (Профессия + 2 любые на выбор). Далее - по одной каждый новый круг.\n")
     characterFile.write("2. 1 характеристика - 1 строчка\n")
-    characterFile.write("3. Женщина остаётся плодовитой до 49 лет. Мужчина ограничений по возрасту не имеет.\n")
-    characterFile.write("4. Характеристики и карты специальных условий не повторяются.\n")
-    characterFile.write("5. Если карта специальных условий была озвучена, она будет применена автоматически\n")
-    characterFile.write("6. Игрок может использовать карты специальных условий в любой момент времени от начала игры и до объявления ведущим о его выбывании.\n")
-    characterFile.write("7. Карты специальных условий могут быть использованны лишь единожды за игру.\n")
-    characterFile.write("8. Если вы не можете назвать своего персонажа геем/лесбиянкой по этическим причинам, назовите его \"Чайлдфри\"")
+    characterFile.write("3. Разрешено никого не выгонять на голосовании. Тогда на следующем круге придётся выгнать двоих.\n")
+    characterFile.write("4. Время на описание персонажа и его оправдание - 60 секунд.\n")
+    characterFile.write("5. Женщина остаётся плодовитой до 49 лет. Мужчина ограничений по возрасту не имеет.\n")
+    characterFile.write("6. Характеристики и карты специальных условий не повторяются.\n")
+    characterFile.write("7. Если карта специальных условий была озвучена, она будет применена автоматически\n")
+    characterFile.write("8. Игрок может использовать карты специальных условий в любой момент времени от начала игры и до объявления ведущим о его выбывании.\n")
+    characterFile.write("9. Карты специальных условий могут быть использованны лишь единожды за игру.\n")
+    characterFile.write("10. Если вы не можете назвать своего персонажа геем/лесбиянкой по этическим причинам, назовите его \"Чайлдфри\"")
     characterFile.close()
 
 
@@ -107,12 +112,28 @@ while True:
         answer = int(input("Введите число: "))
         
         if answer == 1:
-            age = str(random.randint(14,70))
+            age = int(random.normalvariate(40,15))
+            if age<14:
+                age+=10
+            age = str(age)
             if random.randint(0,100)<15:
                 age+=", гомосексуален(а)"
             rewritefile.write(age)
+        elif answer == 3:
+            if random.randint(0,100)>40:
+                heaviness = "Лёгкой тяжести"
+            elif random.randint(0,100)>40:
+                heaviness = "Средней тяжести"
+            else:
+                heaviness = "Высшей тяжести"
+            
+            if random.randint(0,100)>40:
+                healthState = healthStates.pop()+" "+heaviness
+            else:
+                healthState = "Полностью здоров"
+            rewritefile.write(healthState)
         else:
-            rewritefile.write(random.choice(characteristicsList[answer-2]))
+            rewritefile.write(characteristicsList[answer-2].pop())
         rewritefile.close()
     elif answer == "5":
         reshuffleCards()
