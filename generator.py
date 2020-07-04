@@ -90,7 +90,16 @@ def characteristicsLength():
     print("Черты характера: "+str(len(traits)))
     print("Специальные условия: "+str(len(specialConditions)))
     print("---------------------------------------\n")
-
+def createVault(points):
+    vaultFeatures = open("vaultFeatures.txt","r",encoding="utf-8").read().split(",")
+    if points=="":
+        points = random.normalvariate(3,1)
+    points = int(points)
+    random.shuffle(vaultFeatures)
+    features=[]
+    for i in range(points):
+        features.append(vaultFeatures.pop())
+    print ("\nВ вашем бункере: "+", ".join(features)+"\n")
 reshuffleCards()
 
 while True:
@@ -99,8 +108,9 @@ while True:
     print("2 - Создать персонажей (Полученные характеристики будут удаленны, перезапустите программу чтобы добавить их вновь)")
     print("3 - Сгенерировать новую характеристику")
     print("4 - Создать катастрофу")
-    print("5 - Перемешать имеющиеся характеристики")
-    print("6 - Закрыть программу")
+    print("5 - Создать бункер")
+    print("6 - Перемешать имеющиеся характеристики")
+    print("7 - Закрыть программу")
     answer = input("Введите цифру: ")
     if answer == "1":
         characteristicsLength()
@@ -139,6 +149,8 @@ while True:
     elif answer == "4":
         print(random.choice(catastrophes)+"\n\n")
     elif answer == "5":
-        reshuffleCards()
+        createVault(input("Сколько модулей будет в бункере? (Оставьте пустым чтобы выбрать случайно): "))
     elif answer == "6":
+        reshuffleCards()
+    elif answer == "7":
         break
