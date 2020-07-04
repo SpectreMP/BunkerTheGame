@@ -9,6 +9,7 @@ bagages = open("bagages.txt","r",encoding="utf-8").read().split(",")
 traits = open("traits.txt","r",encoding="utf-8").read().split(",")
 specialConditions = open("specialConditions.txt","r",encoding="utf-8").read().split(",")
 characteristicsList = [professions,healthStates,hobbies,phobias,additionalInfos,bagages,traits,specialConditions]
+catastrophes = open("catastrophes.txt","r",encoding="utf-8").read().split(";")
 
 def reshuffleCards():
     random.shuffle(professions)
@@ -135,6 +136,8 @@ while True:
         else:
             rewritefile.write(characteristicsList[answer-2].pop())
         rewritefile.close()
+    elif answer == "4":
+        print(random.choice(catastrophes)+"\n\n")
     elif answer == "5":
         reshuffleCards()
     elif answer == "6":
